@@ -11,7 +11,7 @@ public:
     int isSafe; // -1 unknown; 0 unsafe; 1 safe
     std::vector<std::string> destinations;
     City(){
-        isSafe = -1;
+        isSafe = 1;
         outFlightCount = 0;
     }
 };
@@ -51,10 +51,6 @@ int main(void){
             }
             
         }
-    }
-    for(std::unordered_map<std::string, City*>::iterator it = cities.begin(); it != cities.end(); ++it){
-        if(it->second->isSafe == -1)
-            it->second->isSafe = 1;
     }
 
     while(std::cin >> city1Name){
