@@ -2,6 +2,7 @@
 #include <vector>
 #include <set>
 #include <iterator>
+#include <queue>
 using namespace std;
 
 class Edge{
@@ -25,10 +26,10 @@ public:
         distance = -1;
         isComplete = 0;
     }
-    bool operator>( Node const &B){
+    bool operator<( Node const &B) const{
         return distance > B.distance;
     }
-    bool operator==(Node const &B){
+    bool operator==(Node const &B) const{
         return nodeIndex == B.nodeIndex;
     }
 };
@@ -39,21 +40,17 @@ int main(void){
     cin >> nodes >> edges >> destinations >> source;
     while(nodes != 0 || edges != 0 || destinations != 0|| source != 0){
         vector < vector<Edge> > graph(nodes);
-        vector<Edge> trial;
         for(int i = 0; i < edges; i++){
             int A, B, weight;
             cin >> A >> B >> weight;
             graph[A].push_back(Edge(B, weight));
         }
         
-        set<Node> minDistTree;
+        priority_queue<Node> minDistTree;
         vector<Node> completedNodes(nodes);
         int startingPoint = source;
-        //cout << startingPoint << endl;
         completedNodes[startingPoint].distance = 0;
-        //cout << completedNodes[startingPoint].distance << endl;
         completedNodes[startingPoint].precessor = startingPoint;
-        //cout << completedNodes[startingPoint].precessor << endl;
         completedNodes[startingPoint].isComplete = 1;
 
 
@@ -68,14 +65,15 @@ int main(void){
                         completedNodes[destPoint].distance = currentDist + it->weight;
                         completedNodes[destPoint].precessor = startingPoint;
                         completedNodes[destPoint].nodeIndex = destPoint;
+                        minDistTree.push(completedNodes[destPoint]);
                     }
                 }
                 if(minDistTree.empty()){
                     break;
                 }
-                startingPoint = minDistTree.end()->nodeIndex;
+                startingPoint = minDistTree.top().nodeIndex;
                 completedNodes[startingPoint].isComplete = 1;
-                minDistTree.erase(minDistTree.end());
+                minDistTree.pop();
             }
             if(completedNodes[terminal].isComplete == 1)
                 cout << completedNodes[terminal].distance << endl;
@@ -83,6 +81,8 @@ int main(void){
                 cout << "Impossible" << endl;
         }
         cin >> nodes >> edges >> destinations >> source;
+        if(nodes != 0 || edges != 0 || destinations != 0|| source != 0)
+            cout << endl;
     }
 
 }
