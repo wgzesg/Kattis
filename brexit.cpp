@@ -29,7 +29,7 @@ int main(void){
         int count = countries[currentOut].size();
         for(int i = 0; i < count; i++){
             int partner = countries[currentOut][i];
-            if(isOut[partner] == 0){
+            if(isOut[partner] == 1){
                 continue;
             }
             partnersLeaving[partner] ++;
